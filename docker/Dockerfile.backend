@@ -41,6 +41,9 @@ FROM golang:${GO_VERSION} AS backend-builder
 RUN apk update && apk add --no-cache git make gcc g++ musl-dev
 
 COPY --from=ta-lib-builder /usr/local /usr/local
+# Configure Go proxy for faster module downloads in China
+ENV GOPROXY=https://goproxy.cn,https://goproxy.io,https://proxy.golang.org,direct
+ENV GOSUMDB=sum.golang.google.cn
 
 WORKDIR /app
 COPY go.mod go.sum ./
